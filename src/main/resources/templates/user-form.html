@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Devas - Cadastro de Usuária</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <a href="/" class="logo">Devas</a>
+        <ul class="nav-tabs">
+            <li><a href="/home" class="active">Home</a></li>
+            <li><a href="/register/form">Cadastro</a></li>
+        </ul>
+    </div>
+</nav>
+
+<main class="container form-container">
+    <h1 th:text="${user != null and user.email != null} ? 'Editar Usuária' : 'Cadastrar Nova Usuária'">Cadastrar Nova Usuária</h1>
+
+    <form th:action="@{/register}" method="post" enctype="multipart/form-data" th:object="${user}">
+
+        <label for="email">Email</label>
+        <input type="email" id="email" th:field="*{email}" placeholder="email@exemplo.com" required/>
+
+        <label for="password">Senha</label>
+        <input type="password" id="password" th:field="*{password}" placeholder="Digite uma senha" required/>
+
+        <label for="aboutName">Nome</label>
+        <input type="text" id="aboutName" th:field="*{about.name}" placeholder="Seu nome" required/>
+
+        <label for="age">Idade</label>
+        <input type="number" id="age" th:field="*{about.age}" placeholder="Sua idade" required/>
+
+        <label for="city">Cidade</label>
+        <input type="text" id="city" th:field="*{about.city}" placeholder="Sua cidade" required/>
+
+        <label for="description">Descrição</label>
+        <textarea id="description" th:field="*{about.description}" placeholder="Fale sobre você" maxlength="300" required></textarea>
+
+        <label for="photo">Foto da Usuária</label>
+        <div class="photo-upload-container">
+            <input type="file" id="photo" th:field="*{about.photo}" accept="image/*" style="display:none;" />
+            <label for="photo" class="btn-primary btn-upload">Escolher Arquivo</label>
+            <img id="preview" src="#" alt="Preview da foto" style="display:none;" />
+        </div>
+
+        <br/>
+
+        <label for="linkedin">LinkedIn</label>
+        <input type="text" id="linkedin" th:field="*{social.linkedin}" placeholder="LinkedIn URL"/>
+
+        <label for="github">GitHub</label>
+        <input type="text" id="github" th:field="*{social.github}" placeholder="GitHub URL"/>
+
+        <label for="position">Cargo</label>
+        <input type="text" id="position" th:field="*{job.position}" placeholder="Ex: Backend Developer"/>
+
+        <label for="level">Nível</label>
+        <select id="level" th:field="*{job.level}">
+            <option value="internship">Estagiária</option>
+            <option value="trainee">Trainee</option>
+            <option value="junior">Júnior</option>
+            <option value="pleno">Pleno</option>
+            <option value="senior">Sênior</option>
+            <option value="specialist">Especialista</option>
+        </select>
+
+        <label for="preference">Preferência</label>
+        <select id="preference" th:field="*{job.preference}">
+            <option value="company">Presencial</option>
+            <option value="online">Remoto</option>
+            <option value="hybrid">Híbrido</option>
+        </select>
+
+        <label for="objective">Objetivo</label>
+        <select id="objective" th:field="*{job.objective}">
+            <option value="first_oportunity">Primeira Oportunidade</option>
+            <option value="looking_oportunity">Buscando Oportunidade</option>
+            <option value="career_transition">Transição de Carreira</option>
+            <option value="return_market">Retorno ao Mercado</option>
+        </select>
+
+        <label for="expectation">Expectativa Salarial</label>
+        <input type="number" id="expectation" step="0.01" th:field="*{job.expectation}" placeholder="Ex: 5000.00"/>
+
+        <label for="technology">Tecnologias</label>
+        <input type="text" id="technology" th:field="*{technology}" placeholder="Ex: Java, Spring Boot, Thymeleaf"/>
+
+        <button type="submit" class="btn-primary">Salvar</button>
+    </form>
+</main>
+
+<script src="/js/randomData.js"></script>
+
+</body>
+
+</html>

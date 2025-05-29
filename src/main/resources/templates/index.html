@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>Devas - Vitrine de Usuárias</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+
+<nav>
+    <div class="nav-container">
+        <a href="/" class="logo">Devas</a>
+        <ul class="nav-tabs">
+            <li><a href="/home" class="active">Home</a></li>
+            <li><a href="/register/form">Cadastro</a></li>
+        </ul>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="hero-content">
+        <h1>Mulheres na tecnologia? Sim, com certeza!</h1>
+        <p>Conheça profissionais incríveis e promova um ambiente de trabalho mais diverso e inclusivo para sua empresa!</p>
+        <a href="/register/form" class="btn-cta">Cadastre-se!</a>
+    </div>
+</header>
+
+<main class="container cards-container">
+
+    <div th:if="${#lists.isEmpty(users)}" class="empty-state">
+        Ops! Nenhuma usuária cadastrado ainda, bora corrigir isso?
+    </div>
+
+    <a th:each="user : ${users}" th:href="${user.social.linkedin}" target="_blank" rel="noopener noreferrer" class="user-card">
+
+        <div class="card-content">
+            <img class="user-photo" th:src="@{/home/photo/{id}(id=${user.id})}" alt="Foto da Usuária"/>
+
+            <div class="user-info">
+                <h2 th:text="${user.about.name}">Usuária 1</h2>
+
+                <p><strong>Email:</strong> <span th:text="${user.email}">usuario@email.com</span></p>
+                <p><strong>Cargo:</strong> <span th:text="${user.job.position}">Backend Developer</span></p>
+                <p><strong>Nível:</strong> <span th:text="${user.job.level}">Pleno</span></p>
+                <p><strong>Sobre:</strong> <span th:text="${user.about.description}">Sou uma desenvolvedora apaixonada por tecnologia e inovação.</span>
+                </p>
+
+                <div class="tags">
+                    <span th:each="tech : ${#strings.arraySplit(user.technology, ',')}" class="tag tech" th:text="${tech.trim()}">Java</span>
+                </div>
+
+                <div class="tags">
+                    <span class="tag level" th:text="${user.job.level}">Pleno</span>
+                    <span class="tag preference" th:text="${user.job.preference}">Remoto</span>
+                    <span class="tag objective" th:text="${user.job.objective}">Buscando Oportunidade</span>
+                </div>
+            </div>
+        </div>
+    </a>
+</main>
+
+</body>
+</html>
