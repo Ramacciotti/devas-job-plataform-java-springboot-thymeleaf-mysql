@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface HomeService {
 
-    List<UserDTO> getUsers();
+    List<UserDTO> getUsers(String search);
 
     ResponseEntity<byte[]> getUserPhoto(Long id);
 

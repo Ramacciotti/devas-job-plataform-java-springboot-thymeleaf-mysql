@@ -11,6 +11,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Slf4j
@@ -28,52 +29,59 @@ public class RegisterServiceImpl implements RegisterService {
     @Override
     @Transactional
     public void saveUser(UserDTO userDTO) {
-        log.info("Registering user in the database...");
+        log.info("Registering user with email: {}", userDTO.getEmail());
 
-        Optional<User> databaseUser = userRepository.findByEmail(userDTO.getEmail());
-        if (databaseUser.isPresent()) {
-            log.error("This user already exists!");
-            throw new IllegalArgumentException("this_email_is_already_registered");
+        validateUserEmail(userDTO.getEmail());
+
+        About about = mapAboutDTOToEntity(userDTO.getAbout());
+        Social social = modelMapper.map(userDTO.getSocial(), Social.class);
+        Job job = modelMapper.map(userDTO.getJob(), Job.class);
+        Status status = createDefaultStatus();
+
+        User newUser = new User()
+                .withEmail(userDTO.getEmail())
+                .withPassword(userDTO.getPassword())
+                .withAbout(about)
+                .withSocial(social)
+                .withStatus(status)
+                .withJob(job)
+                .withTechnology(userDTO.getTechnology());
+
+        userRepository.save(newUser);
+        log.info("New user successfully saved in the database: {}", newUser);
+    }
+
+    private void validateUserEmail(String email) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            log.warn("User with email {} already exists.", email);
+            throw new IllegalArgumentException("Email is already registered.");
         }
+    }
 
-        final AboutDTO aboutDTO = userDTO.getAbout();
-        final About about = new About();
+    private About mapAboutDTOToEntity(AboutDTO aboutDTO) {
+        About about = new About();
         about.setName(aboutDTO.getName());
         about.setAge(aboutDTO.getAge());
         about.setCity(aboutDTO.getCity());
         about.setDescription(aboutDTO.getDescription());
 
-        try {
-            if (aboutDTO.getPhoto() != null && !aboutDTO.getPhoto().isEmpty()) {
+        if (aboutDTO.getPhoto() != null && !aboutDTO.getPhoto().isEmpty()) {
+            try {
                 about.setPhoto(aboutDTO.getPhoto().getBytes());
-                log.info("User photo set successfully.");
+                log.info("User photo set successfully for: {}", aboutDTO.getName());
+            } catch (IOException e) {
+                log.error("Failed to process photo for user: {}", aboutDTO.getName(), e);
+                throw new RuntimeException("Failed to process photo", e);
             }
-        } catch (IOException e) {
-            log.error("Failed to read photo bytes.", e);
-            throw new RuntimeException("Failed to read photo bytes", e);
         }
+        return about;
+    }
 
-        final Social social = modelMapper.map(userDTO.getSocial(), Social.class);
-        final Job job = modelMapper.map(userDTO.getJob(), Job.class);
-
-        final User newUser = new User()
-                .withEmail(userDTO.getEmail())
-                .withPassword(userDTO.getPassword())
-                .withAbout(about)
-                .withSocial(social)
-                .withJob(job)
-                .withTechnology(userDTO.getTechnology());
-
-        log.info("New user: {}", newUser);
-
-        final Status status = new Status();
-        status.setLogged(false);
-        newUser.setStatus(status);
-        log.info("New user status: {}", status);
-
-        userRepository.save(newUser);
-        log.info("New user successfully saved in the database!");
-
+    private Status createDefaultStatus() {
+        Status status = new Status();
+        status.setCreatedAt(LocalDateTime.now());
+        log.info("Default status created at: {}", status.getCreatedAt());
+        return status;
     }
 
 }

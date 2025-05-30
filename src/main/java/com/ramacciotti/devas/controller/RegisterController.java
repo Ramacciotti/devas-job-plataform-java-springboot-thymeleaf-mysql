@@ -28,14 +28,14 @@ public class RegisterController {
             return "redirect:/home";
         } catch (Exception e) {
             model.addAttribute("user", userDTO);
-            return "user-form";
+            return "register_form";
         }
     }
 
     @GetMapping("/form")
     public String formRegisterUser(Model model) {
         model.addAttribute("user", new UserDTO());
-        return "user-form";
+        return "register_form";
     }
 
 }
