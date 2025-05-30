@@ -14,12 +14,13 @@ body, html {
   flex-direction: column;
 }
 
+/* NAVBAR */
 nav {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px; /* ou o valor adequado */
+  height: 70px;
   display: flex;
   align-items: center;
   background: linear-gradient(135deg, #3b82f6 0%, #9333ea 100%);
@@ -28,10 +29,10 @@ nav {
 
 .nav-container {
   display: flex;
-  justify-content: space-between; /* Logo à esquerda, menus à direita */
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  padding: 1rem 2rem; /* Ajuste o espaço nas laterais */
+  padding: 1rem 2rem;
 }
 
 .logo {
@@ -41,7 +42,6 @@ nav {
   text-decoration: none;
 }
 
-/* Mantém os estilos anteriores: */
 .nav-tabs {
   display: flex;
   list-style: none;
@@ -71,7 +71,7 @@ nav {
   letter-spacing: 0.05em;
 }
 
-/* Hero Section */
+/* HERO */
 .hero {
   width: 100%;
   min-height: 90vh;
@@ -93,14 +93,12 @@ nav {
   font-size: 3.2rem;
   margin-bottom: 1rem;
   line-height: 1.2;
-  /* TIREI text-shadow conforme seu pedido */
 }
 
 .hero p {
   font-weight: 400;
   font-size: 1.2rem;
   margin-bottom: 2rem;
-  /* TIREI text-shadow conforme seu pedido */
 }
 
 .btn-cta {
@@ -121,13 +119,13 @@ nav {
   transform: translateY(-4px);
 }
 
-/* Container geral */
+/* CONTAINER */
 .container {
   width: 100%;
   padding: 0 10px;
 }
 
-/* Cards container */
+/* CARDS */
 .cards-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -138,10 +136,8 @@ nav {
   padding-right: 5%;
 }
 
-/* Card de usuário */
 .user-card {
   text-decoration: none;
-  color: inherit;
   display: block;
   background: linear-gradient(135deg, #6C63FF, #4a3dbf);
   padding: 1.8rem 2rem;
@@ -160,7 +156,6 @@ nav {
   color: #fff;
 }
 
-/* Conteúdo do card */
 .card-content {
   display: flex;
   align-items: center;
@@ -168,7 +163,6 @@ nav {
   flex-wrap: wrap;
 }
 
-/* Foto de perfil */
 .user-photo {
   width: 120px;
   height: 120px;
@@ -179,7 +173,6 @@ nav {
   box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
-/* Info do usuário */
 .user-info {
   flex: 1;
 }
@@ -188,20 +181,17 @@ nav {
   font-weight: 700;
   font-size: 1.6rem;
   margin-bottom: 0.6rem;
-  color: #f0e9ff;
 }
 
 .user-card p {
   margin: 0.4rem 0;
   font-weight: 500;
-  color: #d6cfff;
 }
 
 .user-card strong {
   color: #e3dbff;
 }
 
-/* Tags coloridas */
 .tags {
   margin-top: 1rem;
 }
@@ -223,7 +213,7 @@ nav {
   background: #6C63FF;
 }
 
-/* Formulário */
+/* FORMULÁRIO */
 .form-container {
   background: #FAFAFA;
   padding: 2rem;
@@ -231,7 +221,7 @@ nav {
   box-shadow: 0 8px 28px rgba(108, 99, 255, 0.12);
   max-width: 1200px;
   margin: 200px auto 0 auto;
-   box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 .form-container h1 {
@@ -240,14 +230,12 @@ nav {
   margin-bottom: 2rem;
   font-size: 2.4rem;
   letter-spacing: 0.02em;
-  text-shadow: none !important;
 }
 
 .form-container label {
   display: block;
   margin-bottom: 0.3rem;
   font-weight: 600;
-  color: #333333;
   font-size: 1.1rem;
 }
 
@@ -305,7 +293,7 @@ nav {
   transform: translateY(-5px);
 }
 
-/* Empty state */
+/* EMPTY STATE */
 .empty-state {
   text-align: center;
   font-size: 1.3rem;
@@ -315,7 +303,7 @@ nav {
   letter-spacing: 0.02em;
 }
 
-/* Responsividade para telas menores */
+/* RESPONSIVIDADE */
 @media (max-width: 980px) {
   .form-container {
     max-width: 90vw;
@@ -323,58 +311,42 @@ nav {
   }
 }
 
-.user-card {
-  background-color: #6C63FF;
-  padding: 1.8rem 2.2rem;
-  border-radius: 18px;
-  box-shadow: 0 6px 18px rgba(108, 99, 255, 0.4);
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  border: 2px solid transparent;
-  color: #f0e9ff;
-}
-
-.user-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-
-.card-content {
+/* PHOTO UPLOAD */
+.photo-upload-container {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-bottom: 1.5rem;
 }
 
-.user-photo {
-  width: 200px;
-  height: 200px;
+.btn-upload {
+  background-color: #5E6FF2;
+  border: none;
+  color: white !important;
+  padding: 1rem 3rem;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.btn-upload:hover {
+  background-color: #4a55c6;
+}
+
+#preview {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  flex-shrink: 0;
   border: 2px solid #4a90e2;
+  box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+  display: block;
 }
 
-.user-info {
-  flex: 1;
-}
-
-.tags {
-  margin-top: 0.5rem;
-}
-
-.tag {
-  display: inline-block;
-  color: white;
-  padding: 0.25rem 1.2rem;
-  border-radius: 22px;
-  font-weight: 700;
-  font-size: 0.8rem;
-  margin-right: 0.5rem;
-  margin-bottom: 0.7rem;
-  cursor: pointer;
-  user-select: none;
-  transition: background-color 0.3s ease;
-}
-
+/* TAGS COLORIDAS */
 .tag.tech {
   background-color: #F7A45B;
 }
@@ -407,36 +379,43 @@ nav {
   background-color: #4FB3F5;
 }
 
-.photo-upload-container {
+/* FORM DE BUSCA */
+.search-form {
   display: flex;
-  align-items: center;
+  flex-direction: row;
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  justify-content: center;
+  margin-top: 80px;
+  padding-left: 5%;
+  padding-right: 5%;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.btn-upload {
-  background-color: #5E6FF2;
-  border: none;
-  color: white !important;
-  padding: 1rem 3rem;
-  font-weight: 700;
+.search-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
   font-size: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: border 0.3s ease;
+}
+
+.search-input:focus {
+  border-color: #ff4081;
+  outline: none;
+}
+
+button.btn-primary {
+  background: linear-gradient(90deg, #6C63FF 0%, #00C897 100%);
+  border: none;
+  color: white;
+  padding: 1.15rem 3.2rem;
+  font-weight: 700;
+  font-size: 1.2rem;
   border-radius: 40px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-  user-select: none;
-}
-
-.btn-upload:hover {
-   background-color: #4a55c6; /* tom mais escuro, porém mais harmônico que antes */
-}
-
-#preview {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #4a90e2;
-  box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
-  display: block;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }

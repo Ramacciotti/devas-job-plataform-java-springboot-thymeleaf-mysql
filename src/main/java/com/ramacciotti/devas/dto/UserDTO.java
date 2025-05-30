@@ -25,6 +25,4 @@ public class UserDTO {
 
     private String technology;
 
-    private StatusDTO status;
-
 }
