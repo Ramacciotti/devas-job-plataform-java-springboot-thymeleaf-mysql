@@ -60,7 +60,7 @@
 
    const randomObjective = () => randomFromArray([
      "first_oportunity",
-     "looking_oportunity",
+     "seeking_oportunity",
      "career_transition",
      "return_market"
    ]);
@@ -80,7 +80,6 @@
    const name = randomName();
 
    document.querySelector('#email').value = `${name.toLowerCase().replace(/\s+/g, '.')}@exemplo.com`;
-   document.querySelector('#password').value = 'senhaSegura123'; // Pode ser fixo
    document.querySelector('#aboutName').value = name;
    document.querySelector('#age').value = randomAge();
    document.querySelector('#city').value = randomCity();
