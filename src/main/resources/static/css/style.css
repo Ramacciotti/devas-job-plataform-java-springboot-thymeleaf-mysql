@@ -14,7 +14,6 @@ body, html {
   flex-direction: column;
 }
 
-/* NAVBAR */
 nav {
   position: fixed;
   top: 0;
@@ -71,7 +70,6 @@ nav {
   letter-spacing: 0.05em;
 }
 
-/* HERO */
 .hero {
   width: 100%;
   min-height: 90vh;
@@ -119,13 +117,12 @@ nav {
   transform: translateY(-4px);
 }
 
-/* CONTAINER */
 .container {
   width: 100%;
   padding: 0 10px;
 }
 
-/* CARDS */
+/* CARDS -------------------------------------------------------------------------------------------*/
 .cards-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -192,28 +189,23 @@ nav {
   color: #e3dbff;
 }
 
-.tags {
-  margin-top: 1rem;
-}
 
+/* TAGS -------------------------------------------------------------------------------------------*/
 .tag {
-  display: inline-block;
-  background: #8c83ff;
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 22px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  margin-right: 0.6rem;
-  user-select: none;
-  transition: background 0.3s ease;
+   display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 22px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: background 0.3s ease;
+    margin: 0 0.6rem 0.6rem 0;
 }
 
 .tag:hover {
   background: #6C63FF;
 }
 
-/* FORMULÁRIO */
+/* FORM  -------------------------------------------------------------------------------------------*/
 .form-container {
   background: #FAFAFA;
   padding: 2rem;
@@ -292,7 +284,6 @@ nav {
   transform: translateY(-5px);
 }
 
-/* EMPTY STATE */
 .empty-state {
   text-align: center;
   font-size: 1.3rem;
@@ -302,7 +293,6 @@ nav {
   letter-spacing: 0.02em;
 }
 
-/* RESPONSIVIDADE */
 @media (max-width: 980px) {
   .form-container {
     max-width: 90vw;
@@ -345,7 +335,6 @@ nav {
   display: block;
 }
 
-/* TAGS COLORIDAS */
 .tag.tech {
   background-color: #F7A45B;
 }
@@ -363,11 +352,11 @@ nav {
 }
 
 .tag.preference {
-  background-color: #3CB371;
+  background-color: #c17cff;
 }
 
 .tag.preference:hover {
-  background-color: #2E8B57;
+  background-color: #9F5FCC;
 }
 
 .tag.objective {
@@ -378,7 +367,14 @@ nav {
   background-color: #4FB3F5;
 }
 
-/* FORM DE BUSCA */
+.tag.expectation {
+  background-color: #3CB371;
+}
+
+.tag.expectation:hover {
+  background-color: #3CB371;
+}
+
 .search-form {
   display: flex;
   flex-direction: row;

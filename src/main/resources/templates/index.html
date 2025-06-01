@@ -60,6 +60,7 @@
                         <span class="tag level" th:text="${user.job.level}">Pleno</span>
                         <span class="tag preference" th:text="${user.job.preference}">Remoto</span>
                         <span class="tag objective" th:text="${user.job.objective}">Buscando Oportunidade</span>
+                        <span class="tag expectation" th:text="'R$ ' + ${#numbers.formatDecimal(user.job.expectation, 1, 'COMMA', 2, 'POINT')}"></span>
                     </div>
                 </div>
             </div>

@@ -53,8 +53,8 @@
    ]);
 
    const randomPreference = () => randomFromArray([
-     "company",
-     "online",
+     "in_person",
+     "remote",
      "hybrid"
    ]);
 
