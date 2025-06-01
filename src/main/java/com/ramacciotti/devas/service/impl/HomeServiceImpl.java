@@ -8,16 +8,14 @@ import com.ramacciotti.devas.model.User;
 import com.ramacciotti.devas.repository.UserRepository;
 import com.ramacciotti.devas.service.HomeService;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.Nullable;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.ramacciotti.devas.utils.TranslatorUtils.toEnglish;
@@ -44,11 +42,7 @@ public class HomeServiceImpl implements HomeService {
             log.info("No search filter found. Returning all users...");
             users = userRepository.findAll();
         } else {
-            String translatedSearch = translateOrFallback(search);
-            log.info("Translated search filter: '{}'", translatedSearch);
-
-            users = userRepository.searchUsers(translatedSearch);
-            log.info("Number of users found with translated search filter: {}", users == null ? 0 : users.size());
+            users = searchUserWithFilter(search);
 
             if (users == null) {
                 log.warn("No users found on database!");
@@ -64,6 +58,47 @@ public class HomeServiceImpl implements HomeService {
                 })
                 .collect(Collectors.toList());
 
+    }
+
+    private List<User> searchUserWithFilter(String search) {
+        String normalizedLevel = normalizeLevelSearchBeforeTranslation(search);
+        log.info("Normalized level before translation: '{}'", normalizedLevel);
+
+        if (normalizedLevel != null) {
+            log.info("Found normalized level in manual map: '{}'. Querying by job level...", normalizedLevel);
+            List<User> users = userRepository.findByJobLevel(normalizedLevel);
+            log.info("Users found by job level '{}': {}", normalizedLevel, users == null ? 0 : users.size());
+            return users;
+        }
+
+        String translatedSearch = translateOrFallback(search);
+        log.info("Translated search filter: '{}'", translatedSearch);
+
+        List<User> users;
+
+        if (isLevelSearch(translatedSearch)) {
+            users = userRepository.findByJobLevel(translatedSearch);
+        } else {
+            users = userRepository.searchUsers(translatedSearch);
+        }
+
+        log.info("Number of users found with translated search filter: {}", users == null ? 0 : users.size());
+        return users;
+    }
+
+    private String normalizeLevelSearchBeforeTranslation(String search) {
+        String lower = search.toLowerCase();
+
+        Map<String, String> manualMap = Map.of(
+                "estagiária", "internship",
+                "estágio", "internship",
+                "pleno", "pleno",
+                "júnior", "junior",
+                "sênior", "senior",
+                "especialista", "specialist"
+        );
+
+        return manualMap.getOrDefault(lower, null);
     }
 
     private void mapEnumDetails(User user, UserDTO userDTO) {
@@ -89,11 +124,38 @@ public class HomeServiceImpl implements HomeService {
         try {
             String translated = toEnglish(text);
             log.info("Translation successful: '{}' -> '{}'", text, translated);
-            return translated;
+
+            translated = fixTranslationExceptions(translated);
+
+            return formatTextForSearch(translated);
         } catch (IOException e) {
             log.error("Translation failed for '{}'. Using original text. Error: {}", text, e.getMessage());
-            return text;
+            return formatTextForSearch(text);
         }
+    }
+
+    private String fixTranslationExceptions(String translated) {
+        Map<String, String> corrections = Map.of(
+                "full", "pleno",
+                "trainee", "trainee",
+                "internship", "internship"
+        );
+
+        String lower = translated.toLowerCase();
+
+        if (corrections.containsKey(lower)) {
+            return corrections.get(lower);
+        }
+
+        return translated;
+    }
+
+    private boolean isLevelSearch(String search) {
+        return Set.of("internship","trainee", "junior", "full", "pleno", "senior", "specialist").contains(search.toLowerCase());
+    }
+
+    private String formatTextForSearch(String text) {
+        return text.trim().toLowerCase().replaceAll("\\s+", "_");
     }
 
 

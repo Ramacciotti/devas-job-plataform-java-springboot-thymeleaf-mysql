@@ -2,8 +2,8 @@ package com.ramacciotti.devas.enums;
 
 public enum Preference {
 
-    company("Presencial"),
-    online("Remoto"),
+    in_person("Presencial"),
+    remote("Remoto"),
     hybrid("Híbrido");
 
     private final String description;
