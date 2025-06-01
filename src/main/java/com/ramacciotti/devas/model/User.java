@@ -26,11 +26,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @NotNull
-    @NotBlank
-    @Column(nullable = false)
-    private String password;
-
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "about_id", nullable = false)
     private About about;

@@ -15,8 +15,6 @@ public class UserDTO {
 
     private String email;
 
-    private String password;
-
     private AboutDTO about;
 
     private SocialDTO social;

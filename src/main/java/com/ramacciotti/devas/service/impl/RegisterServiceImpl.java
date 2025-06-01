@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -40,7 +39,6 @@ public class RegisterServiceImpl implements RegisterService {
 
         User newUser = new User()
                 .withEmail(userDTO.getEmail())
-                .withPassword(userDTO.getPassword())
                 .withAbout(about)
                 .withSocial(social)
                 .withStatus(status)
