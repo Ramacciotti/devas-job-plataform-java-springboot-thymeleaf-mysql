@@ -378,6 +378,7 @@ nav {
 .search-form {
   display: flex;
   flex-direction: row;
+  align-items: center; /* Centraliza verticalmente */
   gap: 1rem;
   justify-content: center;
   margin-top: 80px;
@@ -401,6 +402,17 @@ nav {
 .search-input:focus {
   border-color: #ff4081;
   outline: none;
+}
+
+.btn-clear {
+       background: none;
+        border: none;
+        color: #6C63FF;
+        font-size: 1.5rem;
+        padding: 0.2rem 0.4rem;
+        cursor: pointer;
+        text-decoration: none;
+        transition: color 0.3s ease;
 }
 
 button.btn-primary {
