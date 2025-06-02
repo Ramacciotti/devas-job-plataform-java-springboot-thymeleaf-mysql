@@ -1,0 +1,31 @@
+services:
+  db:  # Serviço do banco de dados MySQL
+    image: mysql:8.0  # Usa a imagem oficial do MySQL versão 8.0
+    environment:  # Variáveis de ambiente para configurar o banco
+      MYSQL_DATABASE: devas  # Nome do banco criado automaticamente na inicialização
+      MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}  # Usuário do banco, vindo do .env
+      MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}  # Senha do usuário, vinda do .env
+      MYSQL_ROOT_PASSWORD: ${SPRING_DATASOURCE_MYSQL_ROOT_PASSWORD}  # Senha do root
+    ports:
+      - "3306:3306"  # Mapeia a porta do MySQL do container para a máquina local
+    volumes:
+      - mysqldata:/var/lib/mysql  # Volume para persistir os dados entre reinícios
+    healthcheck:  # Verifica se o MySQL está pronto para aceitar conexões
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s  # Intervalo entre as verificações
+      timeout: 5s  # Tempo limite para resposta
+      retries: 5  # Número de tentativas antes de considerar como falha
+
+  app:  # Serviço da aplicação Spring Boot
+    build: .  # Builda a imagem Docker usando o Dockerfile na raiz do projeto
+    ports:
+      - "8080:8080"  # Expondo a porta da aplicação
+    environment:  # Variáveis de ambiente passadas para dentro do container da aplicação
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}  # URL de conexão ao banco
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}  # Usuário do banco
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}  # Senha do banco
+    depends_on:  # Garante que o container do banco suba antes da aplicação
+      - db
+
+volumes:
+  mysqldata:  # Volume nomeado para armazenar os dados do MySQL de forma persistente

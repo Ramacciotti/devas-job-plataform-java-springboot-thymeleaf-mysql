@@ -1,0 +1,56 @@
+name: Java CI with Maven and Docker Compose  # Nome do workflow
+
+on:
+  push:
+    branches: [main]  # Dispara o workflow no push para a branch main
+  pull_request:
+    branches: [main]  # Dispara também em PRs para a main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # Ambiente Ubuntu para rodar o job
+    env:
+      # Variáveis de ambiente usadas pela aplicação, vindas dos Secrets do GitHub
+      SPRING_DATASOURCE_URL: ${{ secrets.SPRING_DATASOURCE_URL }}
+      SPRING_DATASOURCE_USERNAME: ${{ secrets.SPRING_DATASOURCE_USERNAME }}
+      SPRING_DATASOURCE_PASSWORD: ${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+      SPRING_DATASOURCE_MYSQL_ROOT_PASSWORD: ${{ secrets.SPRING_DATASOURCE_MYSQL_ROOT_PASSWORD }}
+
+    steps:
+      - name: Checkout repository  # Baixa o código do repositório
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17  # Configura o JDK 17 na VM do GitHub Actions
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'  # Define a versão do Java
+          distribution: 'temurin'  # Distribuição OpenJDK recomendada
+
+      - name: Build with Maven (skip tests)  # Compila o projeto Maven pulando os testes
+        run: mvn clean install -DskipTests
+
+      - name: Build Docker image  # Constrói a imagem Docker da aplicação
+        run: docker build -t devas-job-plafaform-java-springboot-thymeleaf-mysql:latest .
+
+      - name: Clean Docker volume (optional)  # Limpa o volume Docker para evitar dados antigos
+        run: docker volume rm mysqldata || true
+
+      - name: Start services with docker compose  # Sobe os containers do app e do banco de dados
+        run: docker compose up -d --build
+
+      - name: Wait for database to be healthy  # Aguarda o MySQL ficar pronto para conexões
+        run: |
+          echo "Esperando MySQL ficar saudável..."
+          for i in {1..30}; do
+            # Pega o status do healthcheck do container do banco (nome do container com 'db')
+            STATUS=$(docker inspect --format='{{.State.Health.Status}}' $(docker ps -qf "name=db"))
+            if [ "$STATUS" = "healthy" ]; then
+              echo "MySQL está saudável!"
+              exit 0
+            fi
+            echo "Tentativa $i: MySQL ainda não está saudável, esperando 5s..."
+            sleep 5
+          done
+          echo "Erro: MySQL não ficou saudável em 150s"
+          docker compose logs db  # Exibe os logs do container para ajudar no debug
+          exit 1

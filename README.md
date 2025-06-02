@@ -36,7 +36,7 @@ The lack of women in the technology job market is a throbbing pain — it is a p
 
    ```bash
    git clone <REPOSITORY_URL>
-   cd employee-crud
+   cd devas
    ```
 
 2. Configure the database properties in
