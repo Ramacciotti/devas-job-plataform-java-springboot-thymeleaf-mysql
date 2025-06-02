@@ -29,24 +29,29 @@ The lack of women in the technology job market is a throbbing pain — it is a p
 - Java 17 or higher installed  
 - Maven 3.6 or higher installed  
 - MySQL database configured and running  
+- Docker and Docker Compose installed (for containerized execution)
+- GitHub account (to use CI/CD pipeline with Secrets configured)
 
 ## How to Run
 
-1. Clone the repository:
+Docker allows you to run the entire application including the database in containers, isolating dependencies and environment setup.
 
-   ```bash
-   git clone <REPOSITORY_URL>
-   cd devas
-   ```
+1) Create a .env file in the project root (and add it to .gitignore) with:
 
-2. Configure the database properties in
+```SPRING_DATASOURCE_MYSQL_ROOT_PASSWORD=x```
+```SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/x?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC=x```
+```SPRING_DATASOURCE_USERNAME=x ```
+```SPRING_DATASOURCE_PASSWORD=x ```
 
- ```src/main/resources/application.properties ou application.yml.   ```
+2) Run Docker Compose to build and start the app and MySQL database:
 
-3. Run the project using Maven:
+```docker compose up --build```
 
-  ```mvn clean install```
-  ```mvn spring-boot:run```
+3) Access the app at http: http://localhost:8080/home
+
+4) To stop and clean containers: 
+
+```docker compose down -v```
 
 ## Contributions
 
