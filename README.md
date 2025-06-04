@@ -2,6 +2,8 @@
 
 Project aimed at promoting inclusion and diversity in the technology job market by helping women find job opportunities. Developed with Spring Boot, MySQL, Thymeleaf, and other technologies.
 
+![image](https://github.com/user-attachments/assets/f67c8c26-170e-4179-8ed0-16231fe485b5)
+
 ## Table of Contents
 
 - [Description](#description)  
