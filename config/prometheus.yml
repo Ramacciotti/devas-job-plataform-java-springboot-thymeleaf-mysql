@@ -1,0 +1,11 @@
+# Configuração do Prometheus para coletar métricas do Spring Boot Actuator
+global:
+  scrape_interval: 15s  # Intervalo de coleta das métricas (padrão 15 segundos)
+
+scrape_configs:
+  - job_name: "devas-app" # Nome do job, pode ser qualquer nome identificador
+    metrics_path: '/actuator/prometheus'  # Endpoint onde o Spring Boot expõe as métricas
+    static_configs:
+      - targets: [ "host.docker.internal:8080" ]  # Aqui 'localhost' é o nome do serviço Docker no docker-compose, porta 8080
+        labels:
+          application: "devas-app"  # Nome da aplicação
