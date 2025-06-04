@@ -9,29 +9,20 @@ COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
 
-# Dá permissão de execução ao mvnw
-RUN chmod +x ./mvnw
+# Roda o build do Maven, gera o .jar
+RUN mvn clean package -DskipTests
 
-# Faz download das dependências (Roda o build do Maven, gera o .jar)
-RUN ./mvnw dependency:go-offline
-
-# Copia o restante do código
-COPY src ./src
-
-# Compila o projeto sem rodar testes
-RUN ./mvnw clean package -DskipTests
-
-# Etapa final: imagem pequena com JRE
+# Imagem final menor só com Java Runtime
 FROM eclipse-temurin:17-jre-alpine
 
 # Define a pasta de trabalho
 WORKDIR /app
 
-# Copia o JAR gerado na etapa de build
+# copia o .jar gerado na etapa builder
 COPY --from=build /app/target/*.jar app.jar
 
 # Expõe a porta padrão do Spring Boot
 EXPOSE 8080
 
-# Comando para rodar o app quando o container iniciar
+# comando para rodar o app quando o container iniciar
 ENTRYPOINT ["java", "-jar", "app.jar"]
