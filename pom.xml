@@ -14,7 +14,7 @@
 	<artifactId>devas</artifactId>
 	<version>0.0.7-SNAPSHOT</version>
 	<name>devas</name>
-	<description>Running application for 2023</description>
+	<description>A falta de mulheres no mercado de trabalho em tecnologia é uma dor latejante, ou seja, é relevante a ponto de não poder mais ser ignorada. A ideia deste projeto é promover a inclusão e a diversidade nas empresas, além de ajudar mulheres a encontrar uma oportunidade de trabalho.</description>
 
 	<properties>
 		<java.version>17</java.version>
@@ -107,8 +107,7 @@
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>RELEASE</version>
-			<scope>compile</scope>
+			<version>16.0.1</version>
 		</dependency>
 
 	</dependencies>

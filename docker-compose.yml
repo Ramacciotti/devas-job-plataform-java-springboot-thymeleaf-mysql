@@ -1,8 +1,8 @@
 services:
 
-  db:  # Serviço do banco de dados MySQL
+  db: # Serviço do banco de dados MySQL
     image: mysql:8.0  # Usa a imagem oficial do MySQL versão 8.0
-    environment:  # Variáveis de ambiente para configurar o banco
+    environment: # Variáveis de ambiente para configurar o banco
       MYSQL_DATABASE: devas  # Banco de dados criado automaticamente na inicialização
       MYSQL_USER: ${SPRING_DATASOURCE_USERNAME}  # Usuário do banco vindo do arquivo .env
       MYSQL_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}  # Senha do usuário vindo do .env
@@ -11,19 +11,19 @@ services:
       - "3306:3306"  # Mapeia a porta 3306 do container para a máquina local (host)
     volumes:
       - mysqldata:/var/lib/mysql  # Volume para persistência dos dados do MySQL, para não perder dados ao reiniciar o container
-    healthcheck:  # Configura o healthcheck para verificar se o MySQL está pronto para conexões
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    healthcheck: # Configura o healthcheck para verificar se o MySQL está pronto para conexões
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s  # Intervalo entre as verificações de saúde
       timeout: 5s  # Tempo limite para resposta do healthcheck
       retries: 5  # Número de tentativas antes de considerar o serviço como indisponível
     networks:
       - aw-network  # Adiciona o serviço à rede Docker personalizada
 
-  app:  # Serviço da aplicação Spring Boot
+  app: # Serviço da aplicação Spring Boot
     build: .  # Builda a imagem Docker usando o Dockerfile presente na raiz do projeto
     ports:
       - "8080:8080"  # Expõe a porta 8080 da aplicação para acesso local
-    environment:  # Passa variáveis de ambiente para dentro do container da aplicação
+    environment: # Passa variáveis de ambiente para dentro do container da aplicação
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}  # URL de conexão ao banco (ex: jdbc:mysql://db:3306/devas...)
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}  # Usuário do banco
       SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}  # Senha do banco
@@ -32,7 +32,7 @@ services:
     networks:
       - aw-network  # Adiciona o serviço à rede Docker personalizada
 
-  prometheus:  # Serviço do Prometheus para monitoramento das métricas da aplicação
+  prometheus: # Serviço do Prometheus para monitoramento das métricas da aplicação
     image: prom/prometheus:latest  # Usa a imagem oficial do Prometheus
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml  # Monta o arquivo de configuração do Prometheus dentro do container
@@ -44,10 +44,20 @@ services:
     networks:
       - aw-network  # Adiciona o serviço à rede Docker personalizada
 
+  grafana: # Serviço do Grafana para dashboard de métricas
+    image: grafana/grafana:latest # Usa a imagem oficial do Grafana
+    ports:
+      - "3000:3000"  # Expõe a porta 3000 para acesso à interface do Grafana localmente
+    depends_on:
+      - app  # Garante que a aplicação esteja rodando antes do Grafana iniciar
+    networks:
+      - aw-network  # Adiciona o serviço à rede Docker personalizada
+
 volumes:
   mysqldata:  # Volume nomeado para persistência dos dados do MySQL
   prometheus_data:  # Volume nomeado para persistência dos dados do Prometheus
+  grafana_data:
 
 networks:
-  aw-network:  # Rede Docker personalizada para comunicação entre containers
+  aw-network: # Rede Docker personalizada para comunicação entre containers
     driver: bridge  # Tipo padrão de rede Docker que permite comunicação isolada entre containers
